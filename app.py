@@ -146,6 +146,9 @@ async def analyze_email(
     result = classificar_email(text_to_analyze)
 
     return result
+
+app.mount("/static", StaticFiles(directory="."), name="static")
+
 @app.get("/health")
 async def health_check():
     return {
@@ -156,5 +159,3 @@ async def health_check():
 @app.get("/")
 async def read_index():
     return FileResponse("index.html")
-
-app.mount("/static", StaticFiles(directory="."), name="static")
