@@ -332,7 +332,7 @@
                     throw new Error('Por favor, insira um email ou faça upload de um arquivo.');
                 }
 
-                const response = await fetch('/analyze', {
+                const response = await fetch('/analise', {
                     method: 'POST',
                     body: formData
                 });
