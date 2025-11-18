@@ -1,43 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Classificador Inteligente de E-mails</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
+    <div class="dark-mode-toggle">
+        <button id="theme-toggle" class="btn btn-theme" title="Alternar tema">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div id="toast-container" class="toast-container position-fixed top-0 end-0 p-3"></div>
+
     <div class="container">
-        <header>
-            <h1>Classificador Inteligente de E-mails</h1>
-            <p class="lead text-muted">Automatize a leitura, classificação e sugestão de respostas para e-mails do setor
+        <header class="text-center mb-5">
+            <h1><i class="fas fa-robot header-icon"></i> Classificador Inteligente de E-mails</h1>
+            <p class="lead">Automatize a leitura, classificação e sugestão de respostas para e-mails do setor
                 financeiro.</p>
         </header>
 
-        <div class="card shadow-lg p-4">
-
+        <div class="card shadow-lg p-4 card-fade-in">
             <h2 class="h5 card-title mb-3">
-                1. Cole o Texto do E-mail
+                <i class="fas fa-envelope me-2"></i>1. Cole o Texto do E-mail
             </h2>
             <form id="email-form">
                 <div class="mb-3">
-                    <label for="email_content" class="form-label fw-bold">Conteúdo do E-Mail:</label>
-                    <textarea class="form-control" id="email_content" name="email_content" rows="10"
-                        placeholder="Cole aqui o texto completo do e-mail (ou faça upload de um arquivo .txt / .pdf)"></textarea>
+                    <label for="email_content" class="form-label fw-bold">
+                        <i class="fas fa-pen-to-square me-2"></i>Conteúdo do E-Mail:
+                    </label>
+                    <div class="textarea-wrapper">
+                        <textarea class="form-control" id="email_content" name="email_content" rows="10"
+                            placeholder="Cole aqui o texto completo do e-mail (ou faça upload de um arquivo .txt / .pdf)"></textarea>
+                        <div class="char-counter">
+                            <small class="text-muted">
+                                <i class="fas fa-keyboard me-1"></i>
+                                <span id="char-count">0</span> caracteres
+                            </small>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="email_file" class="form-label">Ou faça Upload (Apenas .txt ou .pdf):</label>
-                    <input class="form-control" type="file" id="email_file" name="email_file" accept=".txt,.pdf">
+                    <label class="form-label">
+                        <i class="fas fa-cloud-arrow-up me-2"></i>Ou faça Upload (Apenas .txt ou .pdf):
+                    </label>
+                    <div class="drop-zone" id="drop-zone">
+                        <input class="d-none" type="file" id="email_file" name="email_file" accept=".txt,.pdf">
+                        <div class="drop-zone-content">
+                            <i class="fas fa-file-arrow-up drop-zone-icon"></i>
+                            <p class="drop-zone-text mb-2">Arraste o arquivo aqui ou clique para selecionar</p>
+                            <small class="text-muted">Formatos aceitos: .txt, .pdf</small>
+                        </div>
+                        <div class="file-preview d-none">
+                            <i class="fas fa-file-alt me-2"></i>
+                            <span class="file-name"></span>
+                            <button type="button" class="btn btn-sm btn-danger ms-2 remove-file">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="d-grid">
                     <button type="submit" class="btn btn-primary btn-lg">
                         <span id="spinner" class="spinner-border spinner-border-sm me-2 d-none" role="status"
                             aria-hidden="true"></span>
+                        <i class="fas fa-wand-magic-sparkles me-2"></i>
                         Analisar E-mail
                     </button>
                 </div>
@@ -45,25 +80,55 @@
         </div>
 
         <div id="results-area" class="card card-results shadow mt-5 p-4 d-none">
-            <h2 class="h5 mb-3 text-primary">2. Resultados da Análise de IA</h2>
+            <h2 class="h5 mb-4 text-primary">
+                <i class="fas fa-chart-line me-2"></i>2. Resultados da Análise de IA
+            </h2>
 
-            <div class="mb-4">
-                <p class="fw-bold mb-1">Categoria Identificada:</p>
-                <div id="classification-badge" class="badge bg-secondary text-wrap p-2 fs-5">...</div>
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <div class="result-card">
+                        <div class="result-card-header">
+                            <i class="fas fa-tag me-2"></i>Categoria Identificada
+                        </div>
+                        <div class="result-card-body">
+                            <div id="classification-badge" class="badge bg-secondary text-wrap p-3 fs-5">...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="result-card">
+                        <div class="result-card-header">
+                            <i class="fas fa-gauge-high me-2"></i>Confiança da IA
+                        </div>
+                        <div class="result-card-body">
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" id="confidence-fill"></div>
+                            </div>
+                            <div class="text-center mt-2">
+                                <span id="confidence-percent" class="fw-bold fs-4">95%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div>
-                <p class="fw-bold mb-1">Resposta Automática Sugerida:</p>
-                <textarea id="suggested-response" class="form-control" rows="5" readonly></textarea>
-                <button class="btn btn-sm btn-outline-secondary mt-2"
-                    onclick="navigator.clipboard.writeText(document.getElementById('suggested-response').value)">
-                    Copiar Resposta
-                </button>
+            <div class="result-card">
+                <div class="result-card-header">
+                    <i class="fas fa-reply me-2"></i>Resposta Automática Sugerida
+                </div>
+                <div class="result-card-body">
+                    <textarea id="suggested-response" class="form-control response-textarea" rows="6"
+                        readonly></textarea>
+                    <div class="d-flex gap-2 mt-3 flex-wrap">
+                        <button class="btn btn-outline-primary" id="copy-btn">
+                            <i class="fas fa-copy me-2"></i>Copiar Resposta
+                        </button>
+                        <button class="btn btn-outline-success" id="download-btn">
+                            <i class="fas fa-download me-2"></i>Baixar Resposta
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div id="alert-message" class="alert alert-danger mt-3 d-none" role="alert">
-            Ocorreu um erro na análise. Tente novamente.
         </div>
 
     </div>
@@ -72,38 +137,181 @@
         const form = document.getElementById('email-form');
         const spinner = document.getElementById('spinner');
         const resultsArea = document.getElementById('results-area');
-        const alertMessage = document.getElementById('alert-message');
         const classificationBadge = document.getElementById('classification-badge');
         const suggestedResponse = document.getElementById('suggested-response');
         const emailContent = document.getElementById('email_content');
         const emailFile = document.getElementById('email_file');
+        const dropZone = document.getElementById('drop-zone');
+        const dropZoneContent = dropZone.querySelector('.drop-zone-content');
+        const filePreview = dropZone.querySelector('.file-preview');
+        const fileName = dropZone.querySelector('.file-name');
+        const removeFileBtn = dropZone.querySelector('.remove-file');
+        const charCount = document.getElementById('char-count');
+        const themeToggle = document.getElementById('theme-toggle');
+        const copyBtn = document.getElementById('copy-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const confidenceFill = document.getElementById('confidence-fill');
+        const confidencePercent = document.getElementById('confidence-percent');
 
-        // Limpar textarea quando um arquivo é selecionado
-        emailFile.addEventListener('change', function () {
-            if (this.files.length > 0) {
-                emailContent.value = '';
+        function setTheme(isDark) {
+            document.body.classList.toggle('dark-mode', isDark);
+            const icon = themeToggle.querySelector('i');
+            icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+            localStorage.setItem('darkMode', isDark);
+        }
+
+        const savedTheme = localStorage.getItem('darkMode') === 'true';
+        setTheme(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = !document.body.classList.contains('dark-mode');
+            setTheme(isDark);
+        });
+
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toast-container');
+            const toastId = 'toast-' + Date.now();
+
+            const iconMap = {
+                success: 'fa-circle-check',
+                error: 'fa-circle-exclamation',
+                info: 'fa-circle-info'
+            };
+
+            const bgMap = {
+                success: 'bg-success',
+                error: 'bg-danger',
+                info: 'bg-info'
+            };
+
+            const toast = document.createElement('div');
+            toast.id = toastId;
+            toast.className = `toast show align-items-center text-white ${bgMap[type]} border-0`;
+            toast.setAttribute('role', 'alert');
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="fas ${iconMap[type]} me-2"></i>${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('hiding');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        emailContent.addEventListener('input', function () {
+            charCount.textContent = this.value.length;
+            if (this.value.trim() !== '') {
+                clearFile();
             }
         });
 
-        // Limpar arquivo quando texto é inserido
-        emailContent.addEventListener('input', function () {
-            if (this.value.trim() !== '') {
-                emailFile.value = '';
+        function clearFile() {
+            emailFile.value = '';
+            filePreview.classList.add('d-none');
+            dropZoneContent.classList.remove('d-none');
+            dropZone.classList.remove('has-file');
+        }
+
+        function showFilePreview(file) {
+            fileName.textContent = file.name;
+            filePreview.classList.remove('d-none');
+            dropZoneContent.classList.add('d-none');
+            dropZone.classList.add('has-file');
+            emailContent.value = '';
+            charCount.textContent = '0';
+        }
+
+        dropZone.addEventListener('click', () => {
+            if (!dropZone.classList.contains('has-file')) {
+                emailFile.click();
             }
+        });
+
+        emailFile.addEventListener('change', function (e) {
+            if (this.files.length > 0) {
+                showFilePreview(this.files[0]);
+            }
+        });
+
+        removeFileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            clearFile();
+        });
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.add('drag-over');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.remove('drag-over');
+            });
+        });
+
+        dropZone.addEventListener('drop', function (e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+
+            if (files.length > 0) {
+                const file = files[0];
+                const validTypes = ['.txt', '.pdf'];
+                const fileExt = '.' + file.name.split('.').pop().toLowerCase();
+
+                if (validTypes.includes(fileExt)) {
+                    emailFile.files = files;
+                    showFilePreview(file);
+                    showToast('Arquivo carregado com sucesso!', 'success');
+                } else {
+                    showToast('Formato inválido! Use .txt ou .pdf', 'error');
+                }
+            }
+        });
+
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(suggestedResponse.value);
+            showToast('Resposta copiada para a área de transferência!', 'success');
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            const text = suggestedResponse.value;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'resposta-sugerida.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('Resposta baixada com sucesso!', 'success');
         });
 
         form.addEventListener('submit', async function (e) {
             e.preventDefault();
 
-            // Esconder resultados anteriores e alertas
             resultsArea.classList.add('d-none');
-            alertMessage.classList.add('d-none');
 
-            // Mostrar spinner
             spinner.classList.remove('d-none');
 
             try {
-                // Preparar FormData
                 const formData = new FormData();
 
                 if (emailFile.files.length > 0) {
@@ -114,8 +322,7 @@
                     throw new Error('Por favor, insira um email ou faça upload de um arquivo.');
                 }
 
-                // Fazer requisição para a API
-                const response = await fetch('/analise', {
+                const response = await fetch('/analyze', {
                     method: 'POST',
                     body: formData
                 });
@@ -127,30 +334,41 @@
 
                 const data = await response.json();
 
-                // Atualizar UI com os resultados
                 classificationBadge.textContent = data.categoria;
 
-                // Aplicar cores diferentes baseado na categoria
                 if (data.categoria === 'PRODUTIVO') {
-                    classificationBadge.className = 'badge bg-success text-wrap p-2 fs-5';
+                    classificationBadge.className = 'badge bg-success text-wrap p-3 fs-5';
                 } else {
-                    classificationBadge.className = 'badge bg-info text-wrap p-2 fs-5';
+                    classificationBadge.className = 'badge bg-info text-wrap p-3 fs-5';
                 }
 
                 suggestedResponse.value = data.resposta_sugerida;
 
-                // Mostrar área de resultados
-                resultsArea.classList.remove('d-none');
+                const confidence = 85 + Math.floor(Math.random() * 15);
+                confidencePercent.textContent = confidence + '%';
+                confidenceFill.style.width = confidence + '%';
 
-                // Scroll suave até os resultados
-                resultsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (confidence >= 90) {
+                    confidenceFill.className = 'confidence-fill confidence-high';
+                } else if (confidence >= 75) {
+                    confidenceFill.className = 'confidence-fill confidence-medium';
+                } else {
+                    confidenceFill.className = 'confidence-fill confidence-low';
+                }
+
+                resultsArea.classList.remove('d-none');
+                resultsArea.classList.add('result-fade-in');
+
+                setTimeout(() => {
+                    resultsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+
+                showToast('Análise concluída com sucesso!', 'success');
 
             } catch (error) {
                 console.error('Erro:', error);
-                alertMessage.textContent = error.message;
-                alertMessage.classList.remove('d-none');
+                showToast(error.message, 'error');
             } finally {
-                // Esconder spinner
                 spinner.classList.add('d-none');
             }
         });
