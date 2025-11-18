@@ -97,28 +97,13 @@
             </h2>
 
             <div class="row mb-4">
-                <div class="col-md-6 mb-3">
+                <div class="col-12 mb-3">
                     <div class="result-card">
                         <div class="result-card-header">
                             <i class="fas fa-tag me-2"></i>Categoria Identificada
                         </div>
                         <div class="result-card-body">
                             <div id="classification-badge" class="badge bg-secondary text-wrap p-3 fs-5">...</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <div class="result-card">
-                        <div class="result-card-header">
-                            <i class="fas fa-gauge-high me-2"></i>Confiança da IA
-                        </div>
-                        <div class="result-card-body">
-                            <div class="confidence-bar">
-                                <div class="confidence-fill" id="confidence-fill"></div>
-                            </div>
-                            <div class="text-center mt-2">
-                                <span id="confidence-percent" class="fw-bold fs-4">95%</span>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -162,8 +147,6 @@
         const themeToggle = document.getElementById('theme-toggle');
         const copyBtn = document.getElementById('copy-btn');
         const downloadBtn = document.getElementById('download-btn');
-        const confidenceFill = document.getElementById('confidence-fill');
-        const confidencePercent = document.getElementById('confidence-percent');
 
         // ========== DARK MODE ==========
         function setTheme(isDark) {
@@ -362,18 +345,6 @@
                 }
 
                 suggestedResponse.value = data.resposta_sugerida;
-
-                const confidence = 85 + Math.floor(Math.random() * 15);
-                confidencePercent.textContent = confidence + '%';
-                confidenceFill.style.width = confidence + '%';
-
-                if (confidence >= 90) {
-                    confidenceFill.className = 'confidence-fill confidence-high';
-                } else if (confidence >= 75) {
-                    confidenceFill.className = 'confidence-fill confidence-medium';
-                } else {
-                    confidenceFill.className = 'confidence-fill confidence-low';
-                }
 
                 resultsArea.classList.remove('d-none');
                 resultsArea.classList.add('result-fade-in');
