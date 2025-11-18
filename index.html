@@ -27,17 +27,17 @@
         </header>
 
         <div class="card shadow-lg p-4 card-fade-in">
-            <h2 class="h5 card-title mb-3">
-                <i class="fas fa-envelope me-2"></i>1. Cole o Texto do E-mail
+            <h2 class="h5 card-title mb-4">
+                <i class="fas fa-envelope-open-text me-2"></i>Insira o E-mail para Análise
             </h2>
             <form id="email-form">
-                <div class="mb-3">
+                <div class="mb-4">
                     <label for="email_content" class="form-label fw-bold">
-                        <i class="fas fa-pen-to-square me-2"></i>Conteúdo do E-Mail:
+                        <i class="fas fa-pen-to-square me-2"></i>Digite ou Cole o Texto:
                     </label>
                     <div class="textarea-wrapper">
                         <textarea class="form-control" id="email_content" name="email_content" rows="10"
-                            placeholder="Cole aqui o texto completo do e-mail (ou faça upload de um arquivo .txt / .pdf)"></textarea>
+                            placeholder="Cole aqui o conteúdo do e-mail que deseja analisar..."></textarea>
                         <div class="char-counter">
                             <small class="text-muted">
                                 <i class="fas fa-keyboard me-1"></i>
@@ -47,22 +47,26 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">
-                        <i class="fas fa-cloud-arrow-up me-2"></i>Ou faça Upload (Apenas .txt ou .pdf):
+                <div class="divider-text mb-4">
+                    <span>ou</span>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-file-import me-2"></i>Importe um Arquivo:
                     </label>
                     <div class="drop-zone" id="drop-zone">
                         <input class="d-none" type="file" id="email_file" name="email_file" accept=".txt,.pdf">
                         <div class="drop-zone-content">
-                            <i class="fas fa-file-arrow-up drop-zone-icon"></i>
-                            <p class="drop-zone-text mb-2">Arraste o arquivo aqui</p>
+                            <i class="fas fa-cloud-arrow-up drop-zone-icon"></i>
+                            <p class="drop-zone-text mb-3">Arraste e solte seu arquivo aqui</p>
                             <button type="button" class="btn btn-outline-primary btn-select-file">
-                                <i class="fas fa-folder-open me-2"></i>Selecionar Arquivo
+                                <i class="fas fa-folder-open me-2"></i>Escolher Arquivo
                             </button>
-                            <small class="text-muted d-block mt-2">Formatos aceitos: .txt, .pdf</small>
+                            <small class="text-muted d-block mt-3">Suporta arquivos .txt e .pdf</small>
                         </div>
                         <div class="file-preview d-none">
-                            <i class="fas fa-file-alt me-2"></i>
+                            <i class="fas fa-file-alt me-2 text-success"></i>
                             <span class="file-name"></span>
                             <button type="button" class="btn btn-sm btn-danger ms-2 remove-file">
                                 <i class="fas fa-times"></i>
@@ -84,7 +88,7 @@
 
         <div id="results-area" class="card card-results shadow mt-5 p-4 d-none">
             <h2 class="h5 mb-4 text-primary">
-                <i class="fas fa-chart-line me-2"></i>2. Resultados da Análise de IA
+                <i class="fas fa-chart-line me-2"></i>Resultados da Análise
             </h2>
 
             <div class="row mb-4">
@@ -332,7 +336,7 @@
                     throw new Error('Por favor, insira um email ou faça upload de um arquivo.');
                 }
 
-                const response = await fetch('/analise', {
+                const response = await fetch('/analyze', {
                     method: 'POST',
                     body: formData
                 });
