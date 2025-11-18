@@ -147,10 +147,6 @@ Contribuições são bem-vindas! Por favor:
 4. Push para a branch (`git push origin feature/MinhaFeature`)
 5. Abra um Pull Request
 
-## Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
-
 ## Autor
 
 Lucas Licurgo
