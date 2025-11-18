@@ -55,8 +55,11 @@
                         <input class="d-none" type="file" id="email_file" name="email_file" accept=".txt,.pdf">
                         <div class="drop-zone-content">
                             <i class="fas fa-file-arrow-up drop-zone-icon"></i>
-                            <p class="drop-zone-text mb-2">Arraste o arquivo aqui ou clique para selecionar</p>
-                            <small class="text-muted">Formatos aceitos: .txt, .pdf</small>
+                            <p class="drop-zone-text mb-2">Arraste o arquivo aqui</p>
+                            <button type="button" class="btn btn-outline-primary btn-select-file">
+                                <i class="fas fa-folder-open me-2"></i>Selecionar Arquivo
+                            </button>
+                            <small class="text-muted d-block mt-2">Formatos aceitos: .txt, .pdf</small>
                         </div>
                         <div class="file-preview d-none">
                             <i class="fas fa-file-alt me-2"></i>
@@ -153,6 +156,7 @@
         const confidenceFill = document.getElementById('confidence-fill');
         const confidencePercent = document.getElementById('confidence-percent');
 
+        // ========== DARK MODE ==========
         function setTheme(isDark) {
             if (isDark) {
                 document.body.classList.add('dark-mode');
@@ -164,6 +168,7 @@
             localStorage.setItem('darkMode', isDark);
         }
 
+        // Carregar preferência de tema
         const savedTheme = localStorage.getItem('darkMode') === 'true';
         setTheme(savedTheme);
 
@@ -232,10 +237,11 @@
             charCount.textContent = '0';
         }
 
-        dropZone.addEventListener('click', () => {
-            if (!dropZone.classList.contains('has-file')) {
-                emailFile.click();
-            }
+        // Botão de selecionar arquivo
+        const selectFileBtn = document.querySelector('.btn-select-file');
+        selectFileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            emailFile.click();
         });
 
         emailFile.addEventListener('change', function (e) {

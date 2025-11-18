@@ -55,21 +55,34 @@ body.dark-mode {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: var(--bg-card);
-    border: 2px solid var(--border-color);
-    color: var(--text-primary);
+    background: #ffffff;
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    color: #667eea;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.3rem;
     cursor: pointer;
-    transition: var(--transition);
-    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .btn-theme:hover {
     transform: rotate(20deg) scale(1.1);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    background: #f8f9fa;
+}
+
+body.dark-mode .btn-theme {
+    background: #2d3748;
+    border-color: rgba(138, 163, 245, 0.3);
+    color: #8fa3f5;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .btn-theme:hover {
+    background: #3d4758;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
 }
 
 header h1 {
@@ -206,7 +219,6 @@ textarea.form-control {
     border-radius: 15px;
     padding: 40px 20px;
     text-align: center;
-    cursor: pointer;
     transition: var(--transition);
     background: var(--bg-light);
     min-height: 150px;
@@ -243,6 +255,13 @@ textarea.form-control {
     font-size: 1.1rem;
     color: var(--text-primary);
     font-weight: 500;
+}
+
+.btn-select-file {
+    margin-top: 15px;
+    padding: 10px 25px;
+    font-weight: 600;
+    border-width: 2px;
 }
 
 .file-preview {
@@ -558,6 +577,11 @@ body.dark-mode .result-card-header {
 
     .drop-zone {
         padding: 20px 10px;
+    }
+
+    .btn-select-file {
+        font-size: 0.9rem;
+        padding: 8px 20px;
     }
 
     .file-preview {
