@@ -80,41 +80,6 @@ uvicorn app:app --reload --host 0.0.0.0 --port 8000
 
 Acesse a aplicação em: `http://localhost:8000`
 
-## Deploy no Render
-
-### 1. Prepare o repositório
-
-Certifique-se de que todos os arquivos necessários estão commitados:
-- `app.py`
-- `index.html`
-- `index.css`
-- `requirements.txt`
-
-### 2. Configure o Render
-
-1. Crie uma conta em [render.com](https://render.com)
-2. Clique em "New" → "Web Service"
-3. Conecte seu repositório GitHub
-
-### 3. Configurações do Web Service
-
-- **Name**: classificador-inteligente-email
-- **Environment**: Python 3
-- **Build Command**: `pip install -r requirements.txt`
-- **Start Command**: `uvicorn app:app --host 0.0.0.0 --port $PORT`
-
-### 4. Adicione as variáveis de ambiente
-
-No painel do Render, vá em "Environment" e adicione:
-
-```
-OPENAI_API_KEY=sua_chave_api_aqui
-```
-
-### 5. Deploy
-
-Clique em "Create Web Service" e aguarde o deploy automático.
-
 ## Estrutura do Projeto
 
 ```
@@ -171,41 +136,6 @@ Retorna a página principal da aplicação.
 3. **Analisar**: Clique no botão "Analisar E-mail"
 4. **Resultados**: Visualize a categoria, confiança e resposta sugerida
 5. **Ações**: Copie a resposta para a área de transferência ou baixe como arquivo
-
-## Modo Escuro
-
-A aplicação possui suporte a modo escuro. Clique no ícone de lua/sol no canto superior direito para alternar entre os temas. A preferência é salva no navegador.
-
-## Solução de Problemas
-
-### Erro ao carregar CSS no Render
-
-Se o CSS não carregar após o deploy:
-- Verifique se o caminho no `index.html` está como `/static/index.css`
-- Certifique-se de que o `app.mount()` está ANTES das rotas no `app.py`
-
-### Erro de API Key
-
-```
-Erro na análise com OpenAI: Incorrect API key provided
-```
-
-Solução: Verifique se a variável `OPENAI_API_KEY` está configurada corretamente no `.env` (local) ou nas Environment Variables (Render).
-
-### Erro ao processar PDF
-
-```
-Erro ao processar PDF: ...
-```
-
-Solução: Certifique-se de que o arquivo PDF não está criptografado ou corrompido.
-
-## Segurança
-
-- A API Key da OpenAI deve ser mantida em segredo
-- Nunca commite o arquivo `.env` no repositório
-- Use HTTPS em produção (Render fornece automaticamente)
-- Valide todas as entradas do usuário
 
 ## Contribuindo
 
