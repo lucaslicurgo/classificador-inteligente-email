@@ -28,7 +28,6 @@ client = OpenAI(api_key=chave_api)
 class EmailAnalysisResponse(BaseModel):
     categoria: str
     resposta_sugerida: str
-    confianca: str
 
 def extrair_texto_do_pdf(pdf_file: bytes) -> str:
     try:
@@ -109,12 +108,9 @@ Escreva APENAS a resposta sugerida, sem explicações adicionais."""
 
         resposta_sugerida = response_generation.choices[0].message.content.strip()
 
-        confianca = "Alta"
-
         return EmailAnalysisResponse(
             categoria=categoria,
-            resposta_sugerida=resposta_sugerida,
-            confianca=confianca
+            resposta_sugerida=resposta_sugerida
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro na análise com OpenAI: {str(e)}")
